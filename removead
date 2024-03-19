@@ -1,0 +1,54 @@
+// ==UserScript==
+// @name         去除b站首页推广
+// @version      1.0.3
+// @namespace    https://github.com/odarkblade
+// @description  去除b站首页的推广，理论上可以去除所有的，但是我比较懒，只去除了最上方的六个视频中的推广。
+// @author       https://github.com/odarkblade
+// @match        https://www.bilibili.com/
+// @match        https://www.bilibili.com/?*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
+// @grant        none
+// @license MIT
+// @downloadURL https://update.greasyfork.org/scripts/488882/%E5%8E%BB%E9%99%A4b%E7%AB%99%E9%A6%96%E9%A1%B5%E6%8E%A8%E5%B9%BF.user.js
+// @updateURL https://update.greasyfork.org/scripts/488882/%E5%8E%BB%E9%99%A4b%E7%AB%99%E9%A6%96%E9%A1%B5%E6%8E%A8%E5%B9%BF.meta.js
+// ==/UserScript==
+
+
+
+function runCode() {
+    try {
+        var killfkad = document.getElementsByClassName("bili-video-card__info--owner disable-hover");
+        console.log(killfkad);
+        if (killfkad.length > 0) {
+            var AdContainer = killfkad[0].closest('.feed-card');
+            if (AdContainer && AdContainer.parentNode) {
+                if (AdContainer.parentNode.contains(AdContainer)) {
+                    var parent = AdContainer.parentNode;
+                    var nextSibling = AdContainer.nextElementSibling;
+                    if (nextSibling) {
+                        AdContainer.style.display = 'none';
+                        parent.removeChild(AdContainer);
+                        parent.appendChild(AdContainer);
+                    }
+                }
+            }
+        } else {
+            console.log("Not found");
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
+
+window.addEventListener('load', function() {
+    runCode();
+    console.log("first");
+    window.ref_btn = document.getElementsByClassName("primary-btn roll-btn")[0];
+    window.ref_btn.addEventListener('click', function() {
+        setTimeout(runCode, 500);
+    });
+});
+
+
+
+
